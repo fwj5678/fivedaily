@@ -1,287 +1,106 @@
-/* Base Styles */
-:root {
-    --primary: #0055CC;
-    --primary-light: #E6F0FF;
-    --primary-dark: #003B8E;
+/* 重置默认样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* 基本页面风格 */
 body {
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  line-height: 1.6;
 }
 
-.font-geist-mono {
-    font-family: 'JetBrains Mono', monospace;
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+/* 各区域标题 */
+header, section h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 300;
 }
 
-::-webkit-scrollbar-track {
-    background: #f8f8f8;
+/* 录入区域 */
+#diary-entry {
+  margin-bottom: 2rem;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
+#diary-entry label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #aaa;
+#entry-date, #review-date {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
 }
 
-/* Navigation */
-.nav-link {
-    position: relative;
-    color: #4B5563;
-    font-weight: 500;
-    padding: 0.5rem 0;
-    transition: color 0.2s ease;
+#entry-content {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  resize: vertical;
 }
 
-.nav-link:hover {
-    color: var(--primary);
+#add-entry-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #007aff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--primary);
-    transition: width 0.3s ease;
+#add-entry-btn:hover {
+  background-color: #005bb5;
 }
 
-.nav-link:hover::after {
-    width: 100%;
+/* 所有日记列表 */
+#entries-list li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.mobile-nav-link {
-    display: block;
-    padding: 0.75rem 0;
-    color: #4B5563;
-    font-weight: 500;
-    transition: color 0.2s ease;
-    border-bottom: 1px solid #F3F4F6;
+/* 五年回顾区域 */
+.review-year {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
-.mobile-nav-link:last-child {
-    border-bottom: none;
+.review-year h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
 }
 
-.mobile-nav-link:hover {
-    color: var(--primary);
+.review-year ul {
+  list-style: none;
 }
 
-/* Buttons */
-.btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.5rem;
-    background-color: var(--primary);
-    color: white;
-    font-weight: 500;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.5rem;
-    background-color: white;
-    color: var(--primary);
-    font-weight: 500;
-    border: 1px solid var(--primary);
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-    background-color: var(--primary-light);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.btn-outline {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background-color: var(--primary-light);
-    color: var(--primary);
-    font-weight: 500;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.btn-outline:hover {
-    background-color: rgba(0, 85, 204, 0.15);
-}
-
-/* Product Cards */
-.product-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #F3F4F6;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.product-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    margin-bottom: 1.5rem;
-}
-
-/* Service Cards */
-.service-card {
-    background-color: white;
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #F3F4F6;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.service-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background-color: var(--primary-light);
-    color: var(--primary);
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-}
-
-.service-link {
-    display: inline-flex;
-    align-items: center;
-    color: var(--primary);
-    font-weight: 500;
-    margin-top: auto;
-    transition: color 0.2s ease;
-}
-
-.service-link:hover {
-    color: var(--primary-dark);
-}
-
-/* Case Cards */
-.case-card {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #F3F4F6;
-    height: 100%;
-}
-
-.case-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.case-img {
-    height: 180px;
-}
-
-.case-content {
-    padding: 1.5rem;
-}
-
-.industry-tag {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background-color: var(--primary-light);
-    color: var(--primary);
-    font-size: 0.75rem;
-    font-weight: 500;
-    border-radius: 4px;
-    margin-bottom: 0.75rem;
-}
-
-/* Form Elements */
-.form-input,
-.form-select,
-.form-textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #E5E7EB;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(0, 85, 204, 0.1);
-}
-
-/* Service Process */
-.service-process {
-    position: relative;
-}
-
-.service-process::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 12px;
-    height: 100%;
-    width: 2px;
-    background-color: rgba(0, 85, 204, 0.2);
-}
-
-.process-number {
-    position: absolute;
-    left: -24px;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    color: white;
-    font-weight: 600;
-    font-size: 0.875rem;
+.review-year li {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #e0e0e0;
 }
