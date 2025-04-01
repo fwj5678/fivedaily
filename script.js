@@ -1,15 +1,91 @@
-<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="128" height="128" rx="16" fill="url(#paint0_linear)"/>
-    <circle cx="64" cy="64" r="28" stroke="white" stroke-width="4"/>
-    <path d="M44 64H50" stroke="white" stroke-width="4" stroke-linecap="round"/>
-    <path d="M78 64H84" stroke="white" stroke-width="4" stroke-linecap="round"/>
-    <path d="M64 44V50" stroke="white" stroke-width="4" stroke-linecap="round"/>
-    <path d="M64 78V84" stroke="white" stroke-width="4" stroke-linecap="round"/>
-    <path d="M64 64L74 54" stroke="white" stroke-width="4" stroke-linecap="round"/>
-    <defs>
-        <linearGradient id="paint0_linear" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#8B5CF6"/>
-            <stop offset="1" stop-color="#7C3AED"/>
-        </linearGradient>
-    </defs>
-</svg>
+document.addEventListener('DOMContentLoaded', function () {
+  // 从 localStorage 中加载日记数据
+  let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+
+  const entryDateInput = document.getElementById('entry-date');
+  const entryContent = document.getElementById('entry-content');
+  const addEntryBtn = document.getElementById('add-entry-btn');
+  const entriesList = document.getElementById('entries-list');
+  const reviewDateInput = document.getElementById('review-date');
+  const reviewResults = document.getElementById('review-results');
+
+  // 默认录入日记日期为今天
+  entryDateInput.value = new Date().toISOString().substr(0, 10);
+
+  // 保存数据到 localStorage
+  function saveEntries() {
+    localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+  }
+
+  // 渲染所有日记记录
+  function renderEntries() {
+    entriesList.innerHTML = '';
+    // 按日期降序排序
+    diaryEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    diaryEntries.forEach(entry => {
+      const li = document.createElement('li');
+      li.textContent = `${entry.date}: ${entry.content}`;
+      entriesList.appendChild(li);
+    });
+  }
+
+  // 添加日记事件
+  addEntryBtn.addEventListener('click', function () {
+    const date = entryDateInput.value;
+    const content = entryContent.value.trim();
+    if (!date || content === '') {
+      alert('请填写日期和内容');
+      return;
+    }
+    const entry = { id: Date.now(), date: date, content: content };
+    diaryEntries.push(entry);
+    saveEntries();
+    renderEntries();
+    entryContent.value = '';
+  });
+
+  // 五年回顾功能：当选择回顾日期时，显示该日期（月-日）连续五年的日记
+  reviewDateInput.addEventListener('change', function () {
+    const reviewDate = reviewDateInput.value;
+    if (!reviewDate) return;
+    const selected = new Date(reviewDate);
+    const month = selected.getMonth() + 1; // 月份：0-11转换为1-12
+    const day = selected.getDate();
+    // 以所选日期的年份为基准，连续往前推 5 年（含当前年份）
+    const baseYear = selected.getFullYear();
+
+    reviewResults.innerHTML = '';
+    for (let i = 0; i < 5; i++) {
+      const year = baseYear - i;
+      // 构造完整日期字符串（格式：YYYY-MM-DD）
+      const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      // 过滤出该日期对应的日记
+      const entriesForDate = diaryEntries.filter(entry => entry.date === formattedDate);
+      
+      // 创建一个展示块
+      const container = document.createElement('div');
+      container.className = 'review-year';
+      const header = document.createElement('h3');
+      header.textContent = formattedDate;
+      container.appendChild(header);
+      
+      if (entriesForDate.length > 0) {
+        const ul = document.createElement('ul');
+        entriesForDate.forEach(entry => {
+          const li = document.createElement('li');
+          li.textContent = entry.content;
+          ul.appendChild(li);
+        });
+        container.appendChild(ul);
+      } else {
+        const p = document.createElement('p');
+        p.textContent = '无记录';
+        container.appendChild(p);
+      }
+      reviewResults.appendChild(container);
+    }
+  });
+
+  // 初始渲染所有日记记录
+  renderEntries();
+});
